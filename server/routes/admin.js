@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const express = require('express');
-const { Course, Admin } = require("../db");
+const { Course, Admin } = require("../schema");
 const jwt = require('jsonwebtoken');
 const { SECRET } = require("../middleware/auth")
 const { authenticateJwt } = require("../middleware/auth");

@@ -1,20 +1,29 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dotenv = require('dotenv')
 const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
-
 const app = express();
 
+dotenv.config();
 app.use(cors());
+
 app.use(express.json());
+const port = process.env.PORT;
 
 app.use("/admin", adminRouter)
 app.use("/user", userRouter)
-app.get("/", (req, res) => res.json({msg: "hello world after the class"}));
+app.get("/", (req, res) => res.json({msg: "Hello World after the class"}));
 
-// Connect to MongoDB
-// DONT MISUSE THIS THANKYOU!!
-mongoose.connect('mongodb://localhost:27017/courses', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "courses" });
+mongoose.connect(process.env.MONGO_URL)
+.then(() => {
+        console.log('Connected to MongoDB')
+    })
+.catch((error) => {
+        console.error('Error connecting to MongoDB:', error.message);
+    });
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(port, () => {
+    console.log(`Server is up @ http://localhost:${port} `)
+})
